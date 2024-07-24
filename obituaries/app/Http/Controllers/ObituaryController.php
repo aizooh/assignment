@@ -3,37 +3,41 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\obituaries;
+use App\Models\Obituary; 
 
 class ObituaryController extends Controller
 {
-    function HomeIndex(){
+    public function HomeIndex()
+    {
         return view('obituary_form');
     }
-    public function submit_obituary(Request $request) {
-      $data= new obituaries;
-      $data->name=$request->name;
-      $data->dateOfBirth=$request->dateOfBirth;
-      $data->dateOfDeath=$request->dateOfDeath;
-      $data->content=$request->content;
-      $data->author=$request->author;
-      echo $data->save();
 
+    public function store(Request $request)
+    {
+       
+        $validatedData = $request->validate([
+            'name' => 'required|max:100',
+            'dateOfBirth' => 'required|date',
+            'dateOfDeath' => 'required|date',
+            'content' => 'required',
+            'author' => 'required|max:100',
+        ]);
 
+       
+        $obituary = new Obituary();
+        $obituary->name = $validatedData['name'];
+        $obituary->dateOfBirth = $validatedData['dateOfBirth'];
+        $obituary->dateOfDeath = $validatedData['dateOfDeath'];
+        $obituary->content = $validatedData['content'];
+        $obituary->author = $validatedData['author'];
 
-        // $name = $request->input('name');
-        // $dateOfBirth = $request->input('dateofBirth'); 
-        // $dateOfDeath = $request->input('dateOfDeath'); 
-        // $content = $request->input('content');
-        // $author = $request->input('author');
-        // $isInsertSuccess = obituaries::insert(['name'=>$name,
-        //                                        'dateOfBirth'=>$dateOfBirth,
-        //                                        'dateOfDeath'=>$dateOfDeath,
-        //                                        'content'=>$content,
-        //                                        'author'=>$author,]);
-if($isInsertSuccess)
-echo'<h1> Sumbited Successfully</h1>';
-else 
-echo'<h1>Record not submited</h1>';
+    
+        $isSaved = $obituary->save();
+
+        if ($isSaved) {
+            return '<h1>Submitted Successfully</h1>';
+        } else {
+            return '<h1>Record not submitted</h1>';
+        }
     }
-} 
+}

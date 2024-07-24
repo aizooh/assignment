@@ -7,5 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Obituary extends Model
 {
-    use HasFactory;
+    public $table='obituaries';
+    public $primaryKey='ID';
+    public  $incementing=true;
+    public $timestamps =false;  
 }

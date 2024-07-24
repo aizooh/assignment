@@ -60,7 +60,7 @@ h1{
   <body>
     <h1 class="heading">Welcome to the Obituary Management Platform</h1>
 
-    <form id="obituaryForm" method="POST" action="submit_obituary" enctype='multipart/form-data'>
+    <form id="obituaryForm" method="POST" action="{{ route('submit_obituaries') }}" enctype="multipart/form-data">
     @csrf
       <label for="name">Name:</label>
       <input type="text" id="name" name="name" required />
